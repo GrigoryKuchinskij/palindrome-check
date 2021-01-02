@@ -1,0 +1,26 @@
+﻿<Window x:Name="MainWin" x:Class="PalindromeCheckClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PalindromeCheckClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid><!-- DataContext="{Binding ElementName=MainWin, Path=.}"> -->
+        <ScrollViewer Margin="0,63,0,0">
+            <Grid Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Column="0" Name="PaliFilesLBox"/>
+                <ListBox Grid.Column="1" Name="IsPaliLBox"/><!-- ItemsSource="{Binding Path=IsPali, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/> -->
+            </Grid>
+        </ScrollViewer>
+        <TextBox x:Name="FolderPathTbx" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="692" SelectionChanged="FolderPathTbx_SelectionChanged"/>
+        <TextBox x:Name="URITbx" Text="{Binding Path=URI, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="10,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="692"/>
+        <Button x:Name="FolderPathBtn" Content="Обзор" HorizontalAlignment="Left" Margin="707,10,0,0" VerticalAlignment="Top" Width="75" Click="FolderPathBtn_Click" Height="23"/>
+        <Button x:Name="CheckPalindromeBtn" Content="Проверить" HorizontalAlignment="Left" Margin="707,35,0,0" VerticalAlignment="Top" Width="75" Click="CheckPalindromeBtn_Click" Height="23"/>
+    </Grid>
+</Window>

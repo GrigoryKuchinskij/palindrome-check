@@ -1,0 +1,12 @@
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.csproj.CoreCompileInputs.cache
+E:\Share\PalindromeCheckServer\bin\Debug\PalindromeCheckServer.exe.config
+E:\Share\PalindromeCheckServer\bin\Debug\PalindromeCheckServer.exe
+E:\Share\PalindromeCheckServer\bin\Debug\PalindromeCheckServer.pdb
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.exe
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.pdb
+E:\Share\PalindromeCheckServer\bin\Debug\PalindromeCheckServer.exe.manifest
+E:\Share\PalindromeCheckServer\bin\Debug\PalindromeCheckServer.application
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.TrustInfo.xml
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.exe.manifest
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.application
+E:\Share\PalindromeCheckServer\obj\Debug\PalindromeCheckServer.csprojAssemblyReference.cache
