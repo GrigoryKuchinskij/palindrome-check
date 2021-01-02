@@ -164,7 +164,7 @@ namespace PalindromeCheckServer
                     if (reqval.StartsWith("index="))
                         reqGUID = reqval.Replace("index=", "");
                 }
-                Console.WriteLine(reqWord);
+                //Console.WriteLine(reqWord);
                 reqText = reqWord.ToLower();//.Replace("\r","").Replace("\n", "");
                 if (skipPn == true)
                 {
