@@ -25,7 +25,6 @@ E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.WindowsAPI
 E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.WindowsAPICodePack.Shell.dll
 E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.WindowsAPICodePack.xml
 E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.WindowsAPICodePack.Shell.xml
-E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.csprojAssemblyReference.cache
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\MainWindow.g.cs
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\App.g.cs
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient_MarkupCompile.cache
@@ -38,3 +37,4 @@ E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClien
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.csproj.CopyComplete
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.exe
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.pdb
+E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.csprojAssemblyReference.cache

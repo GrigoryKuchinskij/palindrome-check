@@ -31,8 +31,7 @@ namespace PalindromeCheckClient
     {
         readonly string URIstr = "http://127.0.0.1:8080/";
         List<string> guidL = new List<string>();
-        //ListBox isPali = new ListBox();
-        //List<string> isPaliL = new List<string>();
+        int waitServ = 400;
         MainWindowViewModel mWinVM = new MainWindowViewModel();
 
         public string URITbxValue
@@ -50,13 +49,14 @@ namespace PalindromeCheckClient
 
         private void CheckPalindromeBtn_Click(object sender, RoutedEventArgs e)
         {
-
             if (mWinVM.URI.Trim() == "" || (mWinVM.URI.Trim().IndexOf("http://") == -1 && mWinVM.URI.Trim().IndexOf("https://") == -1))
                 return;
             int filesN = PaliFilesLBox.Items.Count;
             IsPaliLBox.Items.Clear();
-            while (IsPaliLBox.Items.Count<filesN)
+            while (IsPaliLBox.Items.Count < filesN)
+            {
                 IsPaliLBox.Items.Add("#");
+            }
             FolderPathBtn.IsEnabled = false; CheckPalindromeBtn.IsEnabled = false;
             var thread = new Thread(
                 StartSendFiles
@@ -67,15 +67,13 @@ namespace PalindromeCheckClient
         private void StartSendFiles()
         {
             int i = 0;
-            int errN = 0;
-            int threads = 1;
-            bool maxThreads = false;
-            double waitServ = 0.3;
+            bool err = true;
+
             while (true)
             {
-                if (IsPaliLBox.Items[i].ToString() != "#")
+                if (IsPaliLBox.Items[i].ToString() != "#" && i < PaliFilesLBox.Items.Count - 1)
                 {
-                    if (errN == 0) break;
+                    i++;
                     continue;
                 };
 
@@ -85,44 +83,51 @@ namespace PalindromeCheckClient
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);
                 request.ContentType = "text/html";
                 request.ContentLength = byteArray.Length;
-                Stream dataStream = request.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-
+                try
+                {
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();                    
+                } 
+                catch 
+                {
+                    MessageBox.Show("Невозможно соединиться с удаленным сервером");     //System.Net.WebException: "Невозможно соединиться с удаленным сервером";
+                    break; 
+                };
                 _ = Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int ind; string answer;
-                    ReceiveAnswer(request, out ind, out answer);
+                    ReceiveAnswer(request, out int ind, out string answer);
                     answer = TranslateAnswer(answer);
-                    if (answer != "error")
+                    if (answer.Contains("error") || ind == -1)                          //отсутствие ошибки
                     {
-                        IsPaliLBox.Items[ind] = answer;
-                        threads++;
+                        if (answer.Contains("wait="))                                   //сервер перегружен
+                        {
+                            waitServ = Convert.ToInt32(answer.Substring(5)) * 1050;
+                            if (waitServ < 30000)
+                                waitServ *= 2;
+                        }
+                        err = true;
                     }
                     else
                     {
-                        if (answer.Contains("wait="))
-                        {
-                            waitServ = Convert.ToInt32(answer.Substring(5));
-                            maxThreads = true; threads--;
-                        }
-                        errN++;
+                        IsPaliLBox.Items[ind] = answer;
+                        if (waitServ > 90)
+                            waitServ = Convert.ToInt32(Math.Floor(waitServ * 0.6));
                     }
                 }));
                 //request.BeginGetResponse(new AsyncCallback(OnGetHtmlResponse), request);    
                 i++;
-                if (i >= PaliFilesLBox.Items.Count && errN == 0)
-                    break;
-                else if (errN != 0)                    
+                if (i >= PaliFilesLBox.Items.Count)
                 {
-                    i = 0;
-                    errN = 0;
-                }
-
-                if (maxThreads)
-                    Thread.Sleep(Convert.ToInt32(waitServ * 1050 / threads));
-                else
-                    Thread.Sleep(Convert.ToInt32(waitServ * 1050));
+                    if (err == false)
+                        break;
+                    else
+                    {
+                        i = 0;
+                        err = false;
+                    }
+                }                
+                Thread.Sleep(Convert.ToInt32(waitServ));
             }
             _ = Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -175,17 +180,16 @@ namespace PalindromeCheckClient
             {
                 case "true":
                     return "Палиндром";                    
-                    break;
                 case "false":
                     return "Не палиндром";
-                    break;
-                default:               
-                    return "error";                        
-                    break;
+                default:
+                    if (answer.Contains("wait="))                                   //сервер перегружен
+                        return answer;
+                    else return "error";
             }
         }
 
-private string ExtractValue(string text)
+        private string ExtractValue(string text)
         {
             int begInd = text.IndexOf(@"value=""") + 7;
             int endInd = text.IndexOf(@"""", begInd);
@@ -202,21 +206,20 @@ private string ExtractValue(string text)
 
         private void FolderPathTbx_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            LoadFilesInLBox(FolderPathTbx.Text);
-        }
-
-        private void LoadFilesInLBox(string folderPath)
-        {
-            List<string> filesname = Directory.GetFiles(folderPath, "*.txt").ToList<string>();
-            //List<string> files = new List<string> { };
-            foreach (var filePath in filesname)
+            PaliFilesLBox.Items.Clear();
+            try
             {
-                StreamReader stream = new StreamReader(filePath, Encoding.UTF8);
-                PaliFilesLBox.Items.Add(stream.ReadToEnd().Replace("\r", "").Replace("\n", ""));
-                Guid guid = Guid.NewGuid();
-                string guidS = guid.ToString();
-                guidL.Add(guidS);
+                List<string> filesname = Directory.GetFiles(FolderPathTbx.Text, "*.txt").ToList<string>();
+                foreach (var filePath in filesname)
+                {
+                    StreamReader stream = new StreamReader(filePath, Encoding.UTF8);
+                    PaliFilesLBox.Items.Add(stream.ReadToEnd().Replace("\r", "").Replace("\n", ""));
+                    Guid guid = Guid.NewGuid();
+                    string guidS = guid.ToString();
+                    guidL.Add(guidS);
+                }
             }
+            catch { }
         }
 
     }

@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PalindromeCheckClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid><!-- DataContext="{Binding ElementName=MainWin, Path=.}"> -->
-        <ScrollViewer Margin="0,63,0,0">
+        Title="Проверка текстов на наличие палиндромов" Height="450" Width="800" MinHeight="200" MinWidth="300">
+    <Grid>
+        <!-- DataContext="{Binding ElementName=MainWin, Path=.}"> -->
+        <ScrollViewer Margin="10,63,0,10">
             <Grid Margin="0,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -15,12 +16,13 @@
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" Name="PaliFilesLBox"/>
-                <ListBox Grid.Column="1" Name="IsPaliLBox"/><!-- ItemsSource="{Binding Path=IsPali, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/> -->
+                <ListBox Grid.Column="1" Name="IsPaliLBox"/>
+                <!-- ItemsSource="{Binding Path=IsPali, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/> -->
             </Grid>
         </ScrollViewer>
-        <TextBox x:Name="FolderPathTbx" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="692" SelectionChanged="FolderPathTbx_SelectionChanged"/>
-        <TextBox x:Name="URITbx" Text="{Binding Path=URI, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" Height="23" Margin="10,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="692"/>
-        <Button x:Name="FolderPathBtn" Content="Обзор" HorizontalAlignment="Left" Margin="707,10,0,0" VerticalAlignment="Top" Width="75" Click="FolderPathBtn_Click" Height="23"/>
-        <Button x:Name="CheckPalindromeBtn" Content="Проверить" HorizontalAlignment="Left" Margin="707,35,0,0" VerticalAlignment="Top" Width="75" Click="CheckPalindromeBtn_Click" Height="23"/>
+        <TextBox x:Name="FolderPathTbx" Height="23" Margin="10,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" SelectionChanged="FolderPathTbx_SelectionChanged" ToolTip="Путь к папке с проверяемыми файлами" BorderBrush="#FFABADB3" Background="White"/>
+        <TextBox x:Name="URITbx" Text="{Binding Path=URI, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23" Margin="10,35,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/"/>
+        <Button x:Name="FolderPathBtn" Content="Обзор" Margin="0,10,10,0" Click="FolderPathBtn_Click" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке"/>
+        <Button x:Name="CheckPalindromeBtn" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Click="CheckPalindromeBtn_Click" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром"/>
     </Grid>
 </Window>
