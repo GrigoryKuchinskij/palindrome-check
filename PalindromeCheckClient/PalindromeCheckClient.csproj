@@ -96,7 +96,6 @@
     </ApplicationDefinition>
     <Compile Include="DataGridItemsClass.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

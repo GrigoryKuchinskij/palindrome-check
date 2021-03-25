@@ -107,7 +107,7 @@ namespace PalindromeCheckServer
         public bool skipEquals = false;
         public int maxNumbOfRequests = 2;
         private int curNumbOfRequests = 0;
-        private readonly int sleepDur = 6;
+        private readonly int sleepDur = 3;
         //private readonly string[] httpPage = {
         //    @"<!DOCTYPE HTML><html><head></head><body>
         //    <form method=""post"" action=""check-palindrome"">

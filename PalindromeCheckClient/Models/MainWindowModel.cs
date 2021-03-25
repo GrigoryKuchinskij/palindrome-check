@@ -40,19 +40,20 @@ namespace PalindromeCheckClient.Models
             _URI = "http://"+ defIP + ":"+ defPort + "/";
         }
 
+        public bool FolderPathBtnIsEnabled = true;
+        public bool CheckPalindromeBtnIsEnabled = true;
+
         public void CheckPalindrome()
         {
 
-            //FolderPathBtn.IsEnabled = false; CheckPalindromeBtn.IsEnabled = false;
-
+            FolderPathBtnIsEnabled = false; CheckPalindromeBtnIsEnabled = false;
+            RaisePropertyChanged("FolderPathBtnIsEnabled");
+            RaisePropertyChanged("CheckPalindromeBtnIsEnabled");
             var thread = new Thread( StartSendFiles )
             { IsBackground = false };
             thread.Start();
+            
 
-            //_ = Dispatcher.BeginInvoke(new Action(() =>
-            //{
-            //    FolderPathBtn.IsEnabled = true; CheckPalindromeBtn.IsEnabled = true;
-            //}));
             //GC.Collect();
         }
 
@@ -145,6 +146,12 @@ namespace PalindromeCheckClient.Models
                     Math.Max(waitServ / curTreads, defWaitServ)                         //иначе => задержка до обработки следущей строки исходя из числа текущих потоков (с учётом минимальной стандартной задержки)
                     );
             }
+            waitServ = defWaitServ;
+            limitReached = false;
+            
+            FolderPathBtnIsEnabled = true; CheckPalindromeBtnIsEnabled = true;
+            RaisePropertyChanged("FolderPathBtnIsEnabled");
+            RaisePropertyChanged("CheckPalindromeBtnIsEnabled");
         }
 
         private void ProcessAnswerAndShow(string answer, int ind)
@@ -166,12 +173,12 @@ namespace PalindromeCheckClient.Models
                             TranslateAnswer(ref answer);                    //перевод ответа для вывода в datagrid
                             waitServ = time * 1000;                         //задать значение задержки отправки запросов
                             limitReached = true;                            //флаг: сервер был перегружен
-                        }
+                        };
                     };
                 }
                 else
                 {
-                    if (ind <= SimTPalObservCollection.Count && ObservCollectionForDG[ind].Procd == false)
+                    if (ind <= SimTPalObservCollection.Count && ind <= ObservCollectionForDG.Count && ObservCollectionForDG[ind].Procd == false)
                     {                                                       //отбрасываются обработанные строки и строки вне диапазона 
                         _dispatcher.Invoke(new Action(() =>
                         {
@@ -181,9 +188,7 @@ namespace PalindromeCheckClient.Models
                             //вставка ответа в datagrid
                             ObservCollectionForDG[ind].Procd = true;        //пометить строку как обработанную
                         }));
-
                     };
-
                 };
                 RaisePropertyChanged("DGSimTPalItems");
             }

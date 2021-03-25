@@ -16,18 +16,18 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="160"/>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Column="0" HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
                         AutoGenerateColumns="False"
-                        GridLinesVisibility="All"
+                        GridLinesVisibility="Horizontal"
                         HorizontalScrollBarVisibility="Auto"
                         IsReadOnly="True"
                         ItemsSource="{Binding DGFilesItems,
                                             UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
                                             NotifyOnTargetUpdated=True,
-                                            NotifyOnSourceUpdated=True}">
+                                            NotifyOnSourceUpdated=True}" HeadersVisibility="Column">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Text,
                                             UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
@@ -39,13 +39,13 @@
                 <DataGrid Grid.Column="1" HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch" 
                         AutoGenerateColumns="False"
-                        GridLinesVisibility="All"
+                        GridLinesVisibility="Horizontal"
                         HorizontalScrollBarVisibility="Auto"
                         IsReadOnly="True"
                         ItemsSource="{Binding DGSimTPalItems,
                                             UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
                                             NotifyOnTargetUpdated=True,
-                                            NotifyOnSourceUpdated=True}">
+                                            NotifyOnSourceUpdated=True}" CanUserSortColumns="False" CanUserReorderColumns="False" CanUserResizeRows="False" HeadersVisibility="Column">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding SimilarityTPalString,
                                             UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
@@ -57,8 +57,12 @@
             
         </ScrollViewer>
         <TextBox x:Name="FolderPathTbx" Text="{Binding FolderPath, Mode=OneWay}" Height="23" Margin="10,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Путь к папке с проверяемыми файлами" BorderBrush="#FFABADB3" Background="White"/>
-        <Button x:Name="FolderPathBtn" Command="{Binding OpenCommand}" Content="Обзор" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке"/>
+        <Button x:Name="FolderPathBtn" IsEnabled="{Binding FolderPathBtnIsEnabled}" Command="{Binding OpenCommand}" Content="Обзор" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке">
+
+        </Button>
         <TextBox x:Name="URITbx" Text="{Binding URI, Mode=TwoWay}" Height="23" Margin="10,35,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/"/>
-        <Button x:Name="CheckPalindromeBtn" Command="{Binding CheckCommand}" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром"/>
+        <Button x:Name="CheckPalindromeBtn" IsEnabled="{Binding CheckPalindromeBtnIsEnabled}" Command="{Binding CheckCommand}" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром">
+            
+        </Button>
     </Grid>
 </Window>
