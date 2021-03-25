@@ -14,6 +14,7 @@ namespace PalindromeCheckServer
 {
     class Program
     {
+        static readonly string defPort = "8090";
         internal static bool IsRunAsAdmin()
         {
             WindowsIdentity id = WindowsIdentity.GetCurrent();
@@ -49,7 +50,7 @@ namespace PalindromeCheckServer
                     server.maxNumbOfRequests = Convert.ToInt32(arg.Substring(7));
                 if (arg == "skip-punctuation") server.skipPn = true;
             }
-            if (Ip == "" && Port == "") addr = "+:8080"; 
+            if (Ip == "" && Port == "") addr = "+:" + defPort; 
             else if (Ip == "") addr = "+:" + Port;
             else if (Port == "") addr = Ip;
             else addr = Ip + ":" + Port;
@@ -66,7 +67,7 @@ namespace PalindromeCheckServer
 
             while (!exit)
             {
-                Console.WriteLine(@"[x]-Выход | [s]-Пропуск знаков | *число*-количество потоков");
+                Console.WriteLine(@"[x]-Выход | *число*-количество потоков | [s]-Пропуск знаков | [e]-Приравнять ""Е"" к ""Ё"", ""И"" к ""Й"" и отбросить ""Ь"" и ""Ъ""");
                 string cs = Console.ReadLine().ToLower();
                 switch (cs)
                 {
@@ -80,6 +81,13 @@ namespace PalindromeCheckServer
                             Console.WriteLine("Пропуск знаков припинания в палиндроме: вкл"); 
                         else 
                             Console.WriteLine("Пропуск знаков припинания в палиндроме: выкл");
+                        break;
+                    case "e":
+                        server.skipEquals = !server.skipEquals;
+                        if (server.skipEquals)
+                            Console.WriteLine("Пропуск схожих символов и беззвучных в палиндроме: вкл");
+                        else
+                            Console.WriteLine("Пропуск схожих символов и беззвучных в палиндроме: выкл");
                         break;
                     default:
                         try 
@@ -96,17 +104,22 @@ namespace PalindromeCheckServer
     class CheckPalindromeServer
     {
         public bool skipPn = false;
+        public bool skipEquals = false;
         public int maxNumbOfRequests = 2;
         private int curNumbOfRequests = 0;
-        private readonly int sleepDur = 1;
-        private readonly string[] httpPage = {
-            @"<!DOCTYPE HTML><html><head></head><body>
-            <form method=""post"" action=""check-palindrome"">
-            IsPalindrome: <input type=""text"" readonly=""true"" size=""5"" name=""answer"" value=""",
-            @"""><br><input type=""text"" name=""word"" value=""",
-            @"""><br><input type=""text"" readonly=""true"" name=""index"" value=""",
-            @"""><p><input type=""submit"" value=""send""></p>
-            </form></body></html>" };
+        private readonly int sleepDur = 6;
+        //private readonly string[] httpPage = {
+        //    @"<!DOCTYPE HTML><html><head></head><body>
+        //    <form method=""post"" action=""check-palindrome"">
+        //    IsPalindrome: <input type=""text"" readonly=""true"" size=""5"" name=""answer"" value=""",
+        //    @"""><br><input type=""text"" name=""word"" value=""",
+        //    @"""><br><input type=""text"" readonly=""true"" name=""index"" value=""",
+        //    @"""><p><input type=""submit"" value=""send""></p>
+        //    </form></body></html>" };
+        private readonly string[] xmlPage = {
+            @"<input name=""answer"" value=""",
+            @"""><br><input name=""index"" value=""",
+            @""">" };
         private HttpListener listener = new HttpListener();
         public void StartListener(string prefix)
         {
@@ -135,7 +148,8 @@ namespace PalindromeCheckServer
 
                 if (curNumbOfRequests >= maxNumbOfRequests)             //если превышено количество обрабатываемых запросов
                 {
-                    SendResponseData(context.Response, httpPage[0] + "wait=" + sleepDur + httpPage[1] + httpPage[2] + httpPage[3]);
+                    ExtractValuesFromContext(ref context, out string reqWord, out string reqID);
+                    SendResponseData(context.Response, xmlPage[0] + "wait=" + sleepDur + xmlPage[1] + reqID + xmlPage[2]);
                     Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        rejected");
                     continue;
                 }
@@ -146,40 +160,59 @@ namespace PalindromeCheckServer
             Console.WriteLine("Сервер остановлен!");
         }
 
+        private void ExtractValuesFromContext(ref HttpListenerContext context, out string reqWord, out string reqID)
+        {
+            reqWord = "";
+            reqID = "";
+            string reqText = ReadRequestData(context.Request);
+            Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        received " + reqText);
+            string[] reqvals = reqText.Split('&');
+            foreach (string reqval in reqvals)
+            {
+                if (reqval.StartsWith("word="))
+                    reqWord = reqval.Replace("word=", "");
+                if (reqval.StartsWith("index="))
+                    reqID = reqval.Replace("index=", "");
+            }
+        }
+
         private void CheckPalindromeInContext(HttpListenerContext context)
         {
             ++curNumbOfRequests;
             try
             {
-                string reqWord="";
-                string reqGUID = "";
+                string reqWord;
+                string reqID;
                 char[] punctuation = { '.', ',', '!', '?', ';', ':', '"', '-' };
-                string reqText = ReadRequestData(context.Request);
-                Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        received");
-                string[] reqvals = reqText.Split('&');
-                foreach (string reqval in reqvals)
-                {
-                    if (reqval.StartsWith("word="))                    
-                        reqWord = reqval.Replace("word=", "");
-                    if (reqval.StartsWith("index="))
-                        reqGUID = reqval.Replace("index=", "");
-                }
+                char[] eqLetterE = { '.', ',', '!', '?', ';', ':', '"', '-' };
+                ExtractValuesFromContext(ref context, out reqWord, out reqID);
                 //Console.WriteLine(reqWord);
-                reqText = reqWord.ToLower();//.Replace("\r","").Replace("\n", "");
+                reqWord = reqWord.ToLower();//.Replace("\r","").Replace("\n", "");
                 if (skipPn == true)
                 {
-                    reqText = new string(reqText.Select(s => (punctuation.Contains(s) ? ' ' : s)).ToArray());
-                    //string result = string.Join(" ", temp.Split(new[] { ' ' },StringSplitOptions.RemoveEmptyEntries));
-                    reqText = reqText.Replace(" ", "");
-                }                
-                bool isPol = reqText.IsPalindrome();
+                    reqWord = new string(reqWord.Select(s => (punctuation.Contains(s) ? ' ' : s)).ToArray());
+                    reqWord = reqWord.Replace(" ", "");
+                }
+                if (skipEquals == true)
+                {
+                    reqWord = reqWord.Replace("ё", "е");
+                    reqWord = reqWord.Replace("й", "и");
+                    reqWord = reqWord.Replace("ь", "");
+                    reqWord = reqWord.Replace("ъ", "");
+                }
+                bool isPal = reqWord.IsPalindrome();
                 //формируем ответ сервера:
                 Thread.Sleep(sleepDur * 1000);
-                SendResponseData(context.Response, httpPage[0] + isPol.ToString() + httpPage[1] + reqWord.Replace("\"", "") + httpPage[2] + reqGUID + httpPage[3]);
+                SendResponseData(context.Response, xmlPage[0] + isPal.ToString() + xmlPage[1] + reqID + xmlPage[2]);
                 Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        processed");
             }
-            catch (HttpException ex) { Console.WriteLine(@"Ошибка обработки запроса!" + ex.Message); }
-            catch { SendResponseData(context.Response, httpPage[0] + "Error" + httpPage[1] + httpPage[2] + httpPage[3]); }
+            catch //(HttpException ex) 
+            {
+                Console.WriteLine(@"Ошибка обработки запроса!");// + ex.Message); 
+            //}
+            //catch { 
+                SendResponseData(context.Response, xmlPage[0] + "Error" + xmlPage[1] + "-1" + xmlPage[2]); 
+            }
             --curNumbOfRequests;
         }
 

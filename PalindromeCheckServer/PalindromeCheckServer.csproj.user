@@ -15,6 +15,6 @@
     <StartArguments>addr-127.0.0.1 port-8080 maxreq-4 skip-punctuation</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>addr-127.0.0.1 port-8080 maxreq-4 skip-punctuation</StartArguments>
+    <StartArguments>addr-127.0.0.1 port-8090 maxreq-4 skip-punctuation</StartArguments>
   </PropertyGroup>
 </Project>

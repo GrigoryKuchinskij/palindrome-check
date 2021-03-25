@@ -3,26 +3,62 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PalindromeCheckClient"
+        xmlns:local="clr-namespace:PalindromeCheckClient" 
+        xmlns:ViewModels="clr-namespace:PalindromeCheckClient.ViewModels"
         mc:Ignorable="d"
         Title="Проверка текстов на наличие палиндромов" Height="450" Width="800" MinHeight="200" MinWidth="300">
+    <Window.DataContext>
+        <ViewModels:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <!-- DataContext="{Binding ElementName=MainWin, Path=.}"> -->
         <ScrollViewer Margin="10,63,0,10">
-            <Grid Margin="0,0,0,0">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
-
-                <ListBox Grid.Column="0" Name="PaliFilesLBox"/>
-                <ListBox Grid.Column="1" Name="IsPaliLBox"/>
-                <!-- ItemsSource="{Binding Path=IsPali, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/> -->
+                <DataGrid Grid.Column="0" HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        AutoGenerateColumns="False"
+                        GridLinesVisibility="All"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding DGFilesItems,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            NotifyOnTargetUpdated=True,
+                                            NotifyOnSourceUpdated=True}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Text,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            NotifyOnTargetUpdated=True,
+                                            NotifyOnSourceUpdated=True}"
+                                        Width="*" Header="Текстовый файл" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid Grid.Column="1" HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch" 
+                        AutoGenerateColumns="False"
+                        GridLinesVisibility="All"
+                        HorizontalScrollBarVisibility="Auto"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding DGSimTPalItems,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            NotifyOnTargetUpdated=True,
+                                            NotifyOnSourceUpdated=True}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding SimilarityTPalString,
+                                            UpdateSourceTrigger=PropertyChanged, Mode=OneWay,
+                                            NotifyOnTargetUpdated=True,
+                                            NotifyOnSourceUpdated=True}" Width="*" Header="Является ли палиндромом"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
+            
         </ScrollViewer>
-        <TextBox x:Name="FolderPathTbx" Height="23" Margin="10,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" SelectionChanged="FolderPathTbx_SelectionChanged" ToolTip="Путь к папке с проверяемыми файлами" BorderBrush="#FFABADB3" Background="White"/>
-        <TextBox x:Name="URITbx" Text="{Binding Path=URI, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23" Margin="10,35,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/"/>
-        <Button x:Name="FolderPathBtn" Content="Обзор" Margin="0,10,10,0" Click="FolderPathBtn_Click" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке"/>
-        <Button x:Name="CheckPalindromeBtn" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Click="CheckPalindromeBtn_Click" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром"/>
+        <TextBox x:Name="FolderPathTbx" Text="{Binding FolderPath, Mode=OneWay}" Height="23" Margin="10,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Путь к папке с проверяемыми файлами" BorderBrush="#FFABADB3" Background="White"/>
+        <Button x:Name="FolderPathBtn" Command="{Binding OpenCommand}" Content="Обзор" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке"/>
+        <TextBox x:Name="URITbx" Text="{Binding URI, Mode=TwoWay}" Height="23" Margin="10,35,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/"/>
+        <Button x:Name="CheckPalindromeBtn" Command="{Binding CheckCommand}" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром"/>
     </Grid>
 </Window>

@@ -37,4 +37,16 @@ E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClien
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.csproj.CopyComplete
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.exe
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.pdb
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.Xaml.Behaviors.dll
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.dll
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.Wpf.dll
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\System.ValueTuple.dll
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.Xaml.Behaviors.pdb
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Microsoft.Xaml.Behaviors.xml
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.pdb
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.xml
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.Wpf.pdb
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\Prism.Wpf.xml
+E:\Share\palindrome-check\PalindromeCheckClient\bin\Release\System.ValueTuple.xml
+E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\GeneratedInternalTypeHelper.g.cs
 E:\Share\palindrome-check\PalindromeCheckClient\obj\Release\PalindromeCheckClient.csprojAssemblyReference.cache

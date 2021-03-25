@@ -15,10 +15,10 @@ E:\Share\palindrome-check\PalindromeCheckServer\bin\Release\PalindromeCheckServe
 E:\Share\palindrome-check\PalindromeCheckServer\bin\Release\PalindromeCheckServer.application
 E:\Share\palindrome-check\PalindromeCheckServer\bin\Release\PalindromeCheckServer.exe
 E:\Share\palindrome-check\PalindromeCheckServer\bin\Release\PalindromeCheckServer.pdb
-E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.csprojAssemblyReference.cache
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.csproj.CoreCompileInputs.cache
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.TrustInfo.xml
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.exe.manifest
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.application
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.exe
 E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.pdb
+E:\Share\palindrome-check\PalindromeCheckServer\obj\Release\PalindromeCheckServer.csprojAssemblyReference.cache
