@@ -229,7 +229,7 @@ namespace PalindromeCheckClient.Models
             {
                 if (tag.Trim().StartsWith("input"))
                 {
-                    if (tag.Contains(@"""answer"""))//answer = tag.Replace(" ", "").ToLower();
+                    if (tag.Contains(@"""answer"""))
                         answer = ExtractValue(tag);
                     //else if (tag.Contains(@"""word"""))
                     //    word = ExtractValue(tag);
