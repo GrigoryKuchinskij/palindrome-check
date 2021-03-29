@@ -56,13 +56,9 @@
             </Grid>
             
         </ScrollViewer>
-        <TextBox x:Name="FolderPathTbx" Text="{Binding FolderPath, Mode=OneWay}" Height="23" Margin="10,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Путь к папке с проверяемыми файлами" BorderBrush="#FFABADB3" Background="White"/>
-        <Button x:Name="FolderPathBtn" IsEnabled="{Binding FolderPathBtnIsEnabled}" Command="{Binding OpenCommand}" Content="Обзор" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке">
-
-        </Button>
-        <TextBox x:Name="URITbx" Text="{Binding URI, Mode=TwoWay}" Height="23" Margin="10,35,90,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/"/>
-        <Button x:Name="CheckPalindromeBtn" IsEnabled="{Binding CheckPalindromeBtnIsEnabled}" Command="{Binding CheckCommand}" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром">
-            
-        </Button>
+        <TextBox x:Name="FolderPathTbx" Text="{Binding FolderPath, Mode=OneWay}" Height="23" Margin="10,10,90,0" VerticalAlignment="Top" ToolTip="Путь к папке с проверяемыми файлами" IsReadOnly="True" VerticalContentAlignment="Center"/>
+        <Button x:Name="FolderPathBtn" IsEnabled="{Binding FolderPathBtnIsEnabled}" Command="{Binding OpenCommand}" Content="Обзор" Margin="0,10,10,0" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Top" Tag="Указать путь к папке"/>
+        <TextBox x:Name="URITbx" Text="{Binding URI, Mode=TwoWay}" Height="23" Margin="10,35,90,0" VerticalAlignment="Top" ToolTip="Адрес сервера. По умолчанию: http://127.0.0.1:8080/" VerticalContentAlignment="Center"/>
+        <Button x:Name="CheckPalindromeBtn" IsEnabled="{Binding CheckPalindromeBtnIsEnabled}" Command="{Binding CheckCommand}" Content="Проверить" Margin="0,35,10,0" VerticalAlignment="Top" Height="23" HorizontalAlignment="Right" Width="75" Tag="Проверить содержимое файлов на палиндром"/>
     </Grid>
 </Window>

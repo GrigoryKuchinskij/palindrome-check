@@ -165,7 +165,7 @@ namespace PalindromeCheckServer
             reqWord = "";
             reqID = "";
             string reqText = ReadRequestData(context.Request);
-            Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        received " + reqText);
+            Console.WriteLine(curNumbOfRequests + @"/" + maxNumbOfRequests + "        received "); //+ reqText);
             string[] reqvals = reqText.Split('&');
             foreach (string reqval in reqvals)
             {

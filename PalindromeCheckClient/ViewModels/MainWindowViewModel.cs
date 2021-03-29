@@ -23,6 +23,8 @@ namespace PalindromeCheckClient.ViewModels
                 
                 if (_model.FillDataGridWithFolderPath() == -1)
                 {
+                    _model.FolderPath = "ошибка чтения файлов";
+                    Thread.Sleep(500);
                     _model.FolderPath = "";
                 }
             });
